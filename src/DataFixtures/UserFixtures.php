@@ -11,6 +11,8 @@ class UserFixtures extends Fixture
 {
     private $faker;
 
+    public const USER_REFERENCE = 'user';
+
     public function __construct()
     {
         $this->faker = Faker\Factory::create();
@@ -23,6 +25,8 @@ class UserFixtures extends Fixture
             $user->setName($this->faker->name);
             $user->setEmail($this->faker->email);
             $user->setPhone($this->faker->phoneNumber);
+
+            $this->addReference(self::USER_REFERENCE . '-' . $i, $user);
             $manager->persist($user);
         }
 

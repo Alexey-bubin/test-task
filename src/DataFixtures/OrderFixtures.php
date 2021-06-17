@@ -32,13 +32,17 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
             $paymentType = $this->getReference(PaymentTypeFixtures::PAYMENT_TYPE_REFERENCE . '-' . random_int(0, 49));
             $order->setPaymentType($paymentType);
 
+            $user = $this->getReference(UserFixtures::USER_REFERENCE . '-' . random_int(0, 49));
+            $order->setUser($user);
+
             $product = $this->getReference(ProductFixtures::PRODUCT_REFERENCE . '-' . random_int(0, 49));
+
             $orderProducts = new OrderProducts();
             $orderProducts->setCount($this->faker->randomDigit);
             $orderProducts->setOrderNumber($order);
             $orderProducts->setProduct($product);
+            $manager->persist($orderProducts);
 
-            $order->setProduct($orderProducts);
             $order->setStatus($this->faker->randomElement([0, 1, 2]));
 
             $manager->persist($order);
@@ -55,7 +59,8 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
         return [
             ProductFixtures::class,
             PartnerFixtures::class,
-            PaymentTypeFixtures::class
+            PaymentTypeFixtures::class,
+            UserFixtures::class,
         ];
     }
 }
