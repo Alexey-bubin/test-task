@@ -49,7 +49,7 @@ class Order
     private $status;
 
     /**
-     * @ORM\ManyToOne (targetEntity=OrderProducts::class, cascade={"persist", "remove"})
+     * @ORM\ManyToMany (targetEntity=OrderProducts::class, cascade={"persist", "remove"})
      */
     private $product;
 
