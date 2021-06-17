@@ -3,11 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Order;
-use App\Repository\OrderRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class OrdersController extends AbstractController
@@ -17,57 +16,46 @@ class OrdersController extends AbstractController
      */
     public function list(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $orderRepository = $em->getRepository(Order::class);
-        $page = $request->query->get('page', 1);
-        $pageSize = '10';
+        $em     = $this->getDoctrine()->getManager();
+        $page   = $request->query->get('page', 1);
+        $orders = $em->getRepository(Order::class);
 
-        $query = $orderRepository->createQueryBuilder('u')
-            ->orderBy('d.id', 'DESC')
+        $query = $orders->createQueryBuilder('o')
             ->getQuery();
+
+        $pageSize = 100;
 
         $paginator = new Paginator($query);
         $totalItems = count($paginator);
         $pagesCount = ceil($totalItems / $pageSize);
-
         $paginator
             ->getQuery()
-            ->setFirstResult($pageSize * ($page-1))
+            ->setFirstResult($pageSize * ($page-1)) // set the offset
             ->setMaxResults($pageSize);
 
+        $items = [];
+        foreach ($paginator->getQuery()->getResult() as $pageItem) {
+            $items[] = [
+                'id'           => (int) $pageItem->getId(),
+                'date'         => $pageItem->getDate()->format('Y-m-d H:i:s'),
+                'partner'      => $pageItem->getPartner()->getName(),
+                'comision'     => (float) $pageItem->getComision(),
+                'payment_type' => $pageItem->getPaymentType()->getName(),
+                'user'         => $pageItem->getUser()->getName(),
+                'status'       => $pageItem->getStatus(),
+            ];
+        }
 
-        //$orders = $orderRepository->findAll();
         $response = new Response();
         $response->setContent(json_encode([
-            'data' => $paginator,
-            'total' => $totalItems,
-            'pages' => $pagesCount,
-            'page' => $page,
-            'limit' => $pageSize,
+              'data'  => $items,
+              'total' => $totalItems,
+              'pages' => $pagesCount,
+              'page'  => $page,
+              'limit' => $pageSize,
         ]));
 
         $response->headers->set('Content-Type', 'application/json');
-
-        /*
-        $page = $request->query->get('page', 1);
-        $qb = $this->getDoctrine()
-            ->getRepository('AppBundle:Programmer')
-            ->findAllQueryBuilder();
-
-        $adapter = new DoctrineORMAdapter($qb);
-        $pagerfanta = new Pagerfanta($adapter);
-        $pagerfanta->setMaxPerPage(10);
-        $pagerfanta->setCurrentPage($page);
-        $programmers = [];
-        foreach ($pagerfanta->getCurrentPageResults() as $result) {
-            $programmers[] = $result;
-        }
-        $response = $this->createApiResponse([
-                                                 'total' => $pagerfanta->getNbResults(),
-                                                 'count' => count($programmers),
-                                                 'programmers' => $programmers,
-                                             ], 200);
-        */
-        return ;
+        return $response;
     }
 }
