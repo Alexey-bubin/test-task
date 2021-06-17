@@ -17,4 +17,6 @@
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache
+.idea
+.env
 ###< phpunit/phpunit ###
