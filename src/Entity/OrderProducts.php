@@ -26,7 +26,7 @@ class OrderProducts
     /**
      * @ORM\ManyToOne(targetEntity=Product::class)
      */
-    private $products;
+    private $product;
 
     /**
      * @ORM\Column(type="integer")
@@ -50,9 +50,16 @@ class OrderProducts
         return $this;
     }
 
-    public function getProducts(): ?Product
+    public function getProduct(): ?Product
     {
-        return $this->products;
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): self
+    {
+        $this->product = $product;
+
+        return $this;
     }
 
     public function getCount(): ?int

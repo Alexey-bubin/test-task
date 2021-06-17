@@ -48,11 +48,6 @@ class Order
      */
     private $status;
 
-    /**
-     * @ORM\ManyToMany (targetEntity=OrderProducts::class, cascade={"persist", "remove"})
-     */
-    private $product;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -126,23 +121,6 @@ class Order
     public function setStatus(int $status): self
     {
         $this->status = $status;
-
-        return $this;
-    }
-
-    public function getProduct(): ?OrderProducts
-    {
-        return $this->product;
-    }
-
-    public function setProduct(OrderProducts $product): self
-    {
-        // set the owning side of the relation if necessary
-        if ($product->getOrderNumber() !== $this) {
-            $product->setOrderNumber($this);
-        }
-
-        $this->product = $product;
 
         return $this;
     }
