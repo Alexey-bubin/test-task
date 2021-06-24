@@ -22,9 +22,9 @@ class UserFixtures extends Fixture
     {
         for ($i = 0; $i < 50; $i++) {
             $user = new User();
-            $user->setName($this->faker->name);
-            $user->setEmail($this->faker->email);
-            $user->setPhone($this->faker->phoneNumber);
+            $user->setName($this->faker->name)
+                ->setEmail($this->faker->email)
+                ->setPhone($this->faker->phoneNumber);
 
             $this->addReference(self::USER_REFERENCE . '-' . $i, $user);
             $manager->persist($user);

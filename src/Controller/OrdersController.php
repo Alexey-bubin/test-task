@@ -11,10 +11,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class OrdersController extends AbstractController
 {
+    protected $pageSize = 100;
+
     /**
      * @Route("/orders", name="orders")
      */
-    public function list(Request $request)
+    public function list(Request $request): Response
     {
         $em     = $this->getDoctrine()->getManager();
         $page   = $request->query->get('page', 1);
@@ -23,15 +25,13 @@ class OrdersController extends AbstractController
         $query = $orders->createQueryBuilder('o')
             ->getQuery();
 
-        $pageSize = 100;
-
         $paginator = new Paginator($query);
         $totalItems = count($paginator);
-        $pagesCount = ceil($totalItems / $pageSize);
+        $pagesCount = ceil($totalItems / $this->pageSize);
         $paginator
             ->getQuery()
-            ->setFirstResult($pageSize * ($page-1)) // set the offset
-            ->setMaxResults($pageSize);
+            ->setFirstResult($this->pageSize * ($page-1))
+            ->setMaxResults($this->pageSize);
 
         $items = [];
         foreach ($paginator->getQuery()->getResult() as $pageItem) {
@@ -52,7 +52,7 @@ class OrdersController extends AbstractController
               'total' => $totalItems,
               'pages' => $pagesCount,
               'page'  => $page,
-              'limit' => $pageSize,
+              'limit' => $this->pageSize,
         ]));
 
         $response->headers->set('Content-Type', 'application/json');

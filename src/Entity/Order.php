@@ -25,6 +25,7 @@ class Order
 
     /**
      * @ORM\ManyToOne(targetEntity=Partner::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
      */
     private $partner;
 
@@ -34,12 +35,40 @@ class Order
     private $comision;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $count;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $product_name;
+
+    /**
+     * @ORM\Column(type="float", scale=2, precision=10)
+     */
+    private $price;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $sku;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Vendor::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $vendor;
+
+    /**
      * @ORM\ManyToOne(targetEntity=PaymentTypes::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
      */
     private $payment_type;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
@@ -121,6 +150,66 @@ class Order
     public function setStatus(int $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getCount(): ?int
+    {
+        return $this->count;
+    }
+
+    public function setCount(int $count): self
+    {
+        $this->count = $count;
+
+        return $this;
+    }
+
+    public function getProductName(): ?string
+    {
+        return $this->product_name;
+    }
+
+    public function setProductName(string $name): self
+    {
+        $this->product_name = $name;
+
+        return $this;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(float $price): self
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    public function getSku(): ?string
+    {
+        return $this->sku;
+    }
+
+    public function setSku(string $sku): self
+    {
+        $this->sku = $sku;
+
+        return $this;
+    }
+
+    public function getVendor(): ?Vendor
+    {
+        return $this->vendor;
+    }
+
+    public function setVendor(Vendor $vendor): self
+    {
+        $this->vendor = $vendor;
 
         return $this;
     }

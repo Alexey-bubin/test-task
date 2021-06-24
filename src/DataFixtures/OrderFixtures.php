@@ -4,7 +4,6 @@ namespace App\DataFixtures;
 
 use App\Entity\Order;
 use App\Entity\OrderProducts;
-use App\Entity\Vendor;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -23,27 +22,23 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
     {
         for ($i = 0; $i < 10000; $i++) {
             $order  = new Order();
-            $order->setDate($this->faker->dateTime);
-            $order->setComision($this->faker->randomFloat());
 
-            $partner = $this->getReference(PartnerFixtures::PARTNER_REFERENCE . '-' . random_int(0, 49));
-            $order->setPartner($partner);
-
+            $partner     = $this->getReference(PartnerFixtures::PARTNER_REFERENCE . '-' . random_int(0, 49));
             $paymentType = $this->getReference(PaymentTypeFixtures::PAYMENT_TYPE_REFERENCE . '-' . random_int(0, 49));
-            $order->setPaymentType($paymentType);
+            $user        = $this->getReference(UserFixtures::USER_REFERENCE . '-' . random_int(0, 49));
+            $vendor      = $this->getReference(VendorFixtures::VENDORS_REFERENCE . '-' . random_int(0, 49));
 
-            $user = $this->getReference(UserFixtures::USER_REFERENCE . '-' . random_int(0, 49));
-            $order->setUser($user);
-
-            $product = $this->getReference(ProductFixtures::PRODUCT_REFERENCE . '-' . random_int(0, 49));
-
-            $orderProducts = new OrderProducts();
-            $orderProducts->setCount($this->faker->randomDigit);
-            $orderProducts->setOrderNumber($order);
-            $orderProducts->setProduct($product);
-            $manager->persist($orderProducts);
-
-            $order->setStatus($this->faker->randomElement([0, 1, 2]));
+            $order->setDate($this->faker->dateTime)
+                ->setComision($this->faker->randomFloat())
+                ->setPartner($partner)
+                ->setPaymentType($paymentType)
+                ->setUser($user)
+                ->setCount($this->faker->randomElement([0, 1, 2]))
+                ->setProductName($this->faker->name)
+                ->setPrice($this->faker->randomFloat())
+                ->setSku($this->faker->randomNumber())
+                ->setVendor($vendor)
+                ->setStatus($this->faker->randomElement([0, 1, 2]));
 
             $manager->persist($order);
         }
@@ -57,7 +52,7 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies():array
     {
         return [
-            ProductFixtures::class,
+            VendorFixtures::class,
             PartnerFixtures::class,
             PaymentTypeFixtures::class,
             UserFixtures::class,
