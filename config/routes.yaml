@@ -1,6 +1,25 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
-orders:
-  path: /orders
+orders.list:
+  path: /api/orders
   controller: App\Controller\OrdersController::list
+  methods: GET
+orders.export:
+    path: /api/orders/export
+    controller: App\Controller\OrdersController::export
+    methods: GET
+orders.import:
+  path: /api/orders/import
+  controller: App\Controller\OrdersController::import
+  methods: POST
+
+app.swagger_ui:
+  path: /api/doc
+  methods: GET
+  defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
+
+app.swagger:
+  path: /api/doc.json
+  methods: GET
+  defaults: { _controller: nelmio_api_doc.controller.swagger }

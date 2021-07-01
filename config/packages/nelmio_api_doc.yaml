@@ -1,0 +1,9 @@
+nelmio_api_doc:
+  documentation:
+    servers:
+      - url: http://test-task/
+        description: API over HTTP
+    info:
+      title: test task
+      description: test task
+      version: 1.0.0

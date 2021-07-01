@@ -33,7 +33,7 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
                 ->setPartner($partner)
                 ->setPaymentType($paymentType)
                 ->setUser($user)
-                ->setCount($this->faker->randomElement([0, 1, 2]))
+                ->setCount($this->faker->randomElement([1, 2, 3]))
                 ->setProductName($this->faker->name)
                 ->setPrice($this->faker->randomFloat())
                 ->setSku($this->faker->randomNumber())
