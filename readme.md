@@ -1,9 +1,9 @@
 ## Install :
 
 ### 1. Clone
-####https: 
+#### https: 
 `https://github.com/Alexey-bubin/test-task.git`
-####SSH:
+#### SSH:
 `git@github.com:Alexey-bubin/test-task.git`
 
 ### 2. Install
