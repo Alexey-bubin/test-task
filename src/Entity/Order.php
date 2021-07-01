@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\OrderRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Translation\Translator;
+use Symfony\Component\Translation\Loader\ArrayLoader;
 
 /**
  * @ORM\Entity(repositoryClass=OrderRepository::class)
@@ -145,6 +147,11 @@ class Order
     public function getStatus(): ?int
     {
         return $this->status;
+    }
+
+    public function getStatusString($translator):string
+    {
+        return $translator->trans('order.status.' . $this->getStatus());
     }
 
     public function setStatus(int $status): self

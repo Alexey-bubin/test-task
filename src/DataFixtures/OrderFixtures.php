@@ -38,7 +38,7 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
                 ->setPrice($this->faker->randomFloat())
                 ->setSku($this->faker->randomNumber())
                 ->setVendor($vendor)
-                ->setStatus($this->faker->randomElement([0, 1, 2]));
+                ->setStatus($this->faker->randomElement([1, 2, 3, 4]));
 
             $manager->persist($order);
         }

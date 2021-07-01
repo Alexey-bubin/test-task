@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class OrdersController extends AbstractController
 {
@@ -16,7 +17,7 @@ class OrdersController extends AbstractController
     /**
      * @Route("/orders", name="orders")
      */
-    public function list(Request $request): Response
+    public function list(Request $request, TranslatorInterface $translator): Response
     {
         $em     = $this->getDoctrine()->getManager();
         $page   = $request->query->get('page', 1);
@@ -43,6 +44,11 @@ class OrdersController extends AbstractController
                 'payment_type' => $pageItem->getPaymentType()->getName(),
                 'user'         => $pageItem->getUser()->getName(),
                 'status'       => $pageItem->getStatus(),
+                'status_name'  => $pageItem->getStatusString($translator),
+                'count'        => (int) $pageItem->getCount(),
+                'product'      => $pageItem->getProductName(),
+                'price'        => (float) $pageItem->getPrice(),
+                'sku'          => $pageItem->getSku(),
             ];
         }
 
