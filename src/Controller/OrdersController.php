@@ -138,6 +138,33 @@ class OrdersController extends AbstractController
         return $response;
     }
 
+    /**
+     * @OA\Post(
+     * path="/api/orders/import",
+     * description="import orders to server database",
+     * operationId="orders.import",
+     * @OA\RequestBody(
+     *     required=true,
+     *     @OA\MediaType(
+     *          mediaType="multipart/form-data",
+     *          @OA\Schema(
+     *             @OA\Property(property="file", type="string", format="binary"),
+     *          )
+     *     )
+     * ),
+     * @OA\Response(
+     *     response=200,
+     *     description="Return list of paginated orders",
+     *     @OA\JsonContent(
+     *          @OA\Property(property="result", type="string", example="success")
+     *     )
+     *   )
+     * )
+     *
+     * @param Request             $request
+     * @param TranslatorInterface $translator
+     * @return Response
+     */
     public function import(Request $request, TranslatorInterface $translator) {
         $validator = Validation::createValidator();
         $uploadedFile = $request->files->get('file');

@@ -132,6 +132,8 @@ class OrdersXlsImportService
 
         if (is_null($partner)) {
             $partner = new Partner();
+        } else {
+            return $partner;
         }
 
         $partner->setName($row[2]);
@@ -203,6 +205,8 @@ class OrdersXlsImportService
         if (is_null($user)) {
             $user = new User();
             $user->setName($row[11]);
+        } else {
+            return $user;
         }
 
         $user->setPhone($row[12]);

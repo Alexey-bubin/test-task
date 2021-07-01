@@ -14,3 +14,7 @@
 `php bin/console doctrine:migrations:migrate`
 
 `php bin/console doctrine:fixtures:load`
+
+### Docs : 
+
+http://localhost:8000/api/doc
